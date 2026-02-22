@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Tracker</title>
+
+    <!-- tailwind -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: "Geist", sans-serif;
+        }
+    </style>
+
+</head>
+
+<body class="bg-[#f8fafc]">
+    <header class="w-[80%] mx-auto">
+        <h1 class="text-[32px] font-bold pt-[60px] pb-5">Job Application Tracker</h1>
+        <div class="grid grid-cols-3 gap-8">
+            <div class="bg-white border border-[#f1f2f4] rounded-lg p-5 w-[359px] h-[97px]">
+                <p>Total</p>
+                <p class="font-bold text-2xl" id="total">0</p>
+            </div>
+
+            <div class="bg-white border border-[#f1f2f4] rounded-lg p-5 w-[359px] h-[97px]">
+                <p>Interview</p>
+                <p class="text-emerald-500 font-bold text-2xl" id="interviewCount">0</p>
+            </div>
+
+            <div class="bg-white border border-[#f1f2f4] rounded-lg p-5 w-[359px] h-[97px]">
+                <p>Rejected</p>
+                <p class="text-red-500 font-bold text-2xl" id="rejectedCount">0</p>
+            </div>
+        </div>
+    
+</body>
+
+</html>
