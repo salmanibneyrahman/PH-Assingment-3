@@ -1,6 +1,6 @@
 let interviewList = [];
 let rejectedList = [];
-let currentStatus = 'all';
+let currentStatus = 'all-filter-btn';
 
 const total = document.getElementById('total');
 const interviewCount = document.getElementById('interviewCount');
@@ -15,21 +15,22 @@ const rejectedFilterBtn = document.getElementById('rejected-filter-btn');
 const allCardSection = document.getElementById('allCards');
 const filterSection = document.getElementById('filtered-section');
 const mainContainer = document.querySelector('main');
-const mainElement = document.querySelector('main');   // for bottom padding
+
+// Bottom padding
+mainContainer.classList.add('pb-24');
 
 function calculateCount() {
     const totalCards = allCardSection.children.length;
-    
+
     total.innerText = totalCards;
     availableJobsCount.innerText = `${totalCards} jobs`;
     interviewCount.innerText = interviewList.length;
     rejectedCount.innerText = rejectedList.length;
 
-    updateView();   // ← decides what to show (cards or empty state)
+    updateView();
 }
 
 function updateView() {
-    // Hide everything first
     allCardSection.classList.add('hidden');
     filterSection.classList.add('hidden');
     emptyState.classList.add('hidden');
@@ -40,7 +41,7 @@ function updateView() {
         } else {
             allCardSection.classList.remove('hidden');
         }
-    } 
+    }
     else if (currentStatus === 'interview-filter-btn') {
         if (interviewList.length === 0) {
             emptyState.classList.remove('hidden');
@@ -48,7 +49,7 @@ function updateView() {
             filterSection.classList.remove('hidden');
             renderInterview();
         }
-    } 
+    }
     else if (currentStatus === 'rejected-filter-btn') {
         if (rejectedList.length === 0) {
             emptyState.classList.remove('hidden');
@@ -59,12 +60,8 @@ function updateView() {
     }
 }
 
-// Add bottom padding to the whole page (so content never sticks to the bottom)
-mainElement.classList.add('pb-24');
-
-// ==================== TOGGLE FILTER BUTTONS ====================
+// Toggle filter buttons
 function toggleStyle(id) {
-    // reset all buttons
     allFilterBtn.classList.add('bg-white', 'text-[#64748b]');
     allFilterBtn.classList.remove('bg-[#3b82f6]', 'text-white');
 
@@ -77,21 +74,19 @@ function toggleStyle(id) {
     const selected = document.getElementById(id);
     currentStatus = id;
 
-    // activate selected button
     selected.classList.remove('bg-white', 'text-[#64748b]');
     selected.classList.add('bg-[#3b82f6]', 'text-white');
 
-    // show/hide sections
     if (id === 'interview-filter-btn') {
         renderInterview();
     } else if (id === 'rejected-filter-btn') {
         renderRejected();
     }
 
-    calculateCount();   // this will call updateView()
+    calculateCount();
 }
 
-// ==================== EVENT DELEGATION ====================
+// Event delegation
 mainContainer.addEventListener('click', function (event) {
 
     if (event.target.classList.contains('interview-btn')) {
@@ -160,20 +155,16 @@ mainContainer.addEventListener('click', function (event) {
         const card = event.target.closest('.card');
         const jobName = card.querySelector('.jobName').innerText;
 
-        // Remove from both lists
         interviewList = interviewList.filter(item => item.jobName !== jobName);
         rejectedList = rejectedList.filter(item => item.jobName !== jobName);
 
-        // Remove original card from All view
         const allCardToDelete = Array.from(allCardSection.children).find(c =>
             c.querySelector('.jobName') && c.querySelector('.jobName').innerText === jobName
         );
         if (allCardToDelete) allCardToDelete.remove();
 
-        // Remove the clicked card
         card.remove();
 
-        // Re-render if we are in filtered view
         if (currentStatus === 'interview-filter-btn') {
             renderInterview();
         } else if (currentStatus === 'rejected-filter-btn') {
@@ -184,7 +175,7 @@ mainContainer.addEventListener('click', function (event) {
     }
 });
 
-// ==================== RENDER FUNCTIONS ====================
+// Render function
 function renderInterview() {
     filterSection.innerHTML = '';
 
@@ -257,5 +248,5 @@ function renderRejected() {
     }
 }
 
-// Initial call
+// Initial load
 calculateCount();
