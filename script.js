@@ -58,9 +58,10 @@ function toggleStyle(id) {
 
 // ==================== EVENT DELEGATION ====================
 mainContainer.addEventListener('click', function (event) {
-    const parenNode = event.target.parentNode.parentNode;   // same as your plant tracker
 
     if (event.target.classList.contains('interview-btn')) {
+        const parenNode = event.target.parentNode.parentNode;
+
         const jobName = parenNode.querySelector('.jobName').innerText;
         const jobPosition = parenNode.querySelector('.jobPosition').innerText;
         const details = parenNode.querySelector('.space-y-6 > div:nth-child(2) p').innerText;
@@ -90,6 +91,8 @@ mainContainer.addEventListener('click', function (event) {
         calculateCount();
 
     } else if (event.target.classList.contains('rejected-btn')) {
+        const parenNode = event.target.parentNode.parentNode;
+
         const jobName = parenNode.querySelector('.jobName').innerText;
         const jobPosition = parenNode.querySelector('.jobPosition').innerText;
         const details = parenNode.querySelector('.space-y-6 > div:nth-child(2) p').innerText;
@@ -117,10 +120,37 @@ mainContainer.addEventListener('click', function (event) {
             renderInterview();
         }
         calculateCount();
+
+    // ==================== DELETE FUNCTIONALITY (NEW) ====================
+    } else if (event.target.closest('.btn-delete')) {
+        const card = event.target.closest('.card');
+        const jobName = card.querySelector('.jobName').innerText;
+
+        // Remove from both lists
+        interviewList = interviewList.filter(item => item.jobName !== jobName);
+        rejectedList = rejectedList.filter(item => item.jobName !== jobName);
+
+        // Remove the original card from All view (if it still exists)
+        const allCardToDelete = Array.from(allCardSection.children).find(c => 
+            c.querySelector('.jobName') && c.querySelector('.jobName').innerText === jobName
+        );
+        if (allCardToDelete) allCardToDelete.remove();
+
+        // Remove the clicked card immediately
+        card.remove();
+
+        // Re-render current filtered view if we are in one
+        if (currentStatus === 'interview-filter-btn') {
+            renderInterview();
+        } else if (currentStatus === 'rejected-filter-btn') {
+            renderRejected();
+        }
+
+        calculateCount();
     }
 });
 
-// ==================== RENDER FUNCTIONS ====================
+// ==================== RENDER FUNCTIONS (unchanged) ====================
 function renderInterview() {
     filterSection.innerHTML = '';
 
